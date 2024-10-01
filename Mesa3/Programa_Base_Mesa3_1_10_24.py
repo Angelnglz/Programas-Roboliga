@@ -1,4 +1,3 @@
-
 from pybricks.hubs import PrimeHub
 from pybricks.pupdevices import Motor, ColorSensor, UltrasonicSensor, ForceSensor
 from pybricks.parameters import Button, Color, Direction, Port, Side, Stop
@@ -181,14 +180,6 @@ def seguidor_de_linea():
 
         # Actualizar el error anterior
         error_anterior = error
-
-def rescate():
-        hub.display.text("RESCATE")
-        mensaje_rescate = "rescate" # Leo el mensaje enviado
-        data_send = [mensaje_rescate] # lo almaceno en una lista
-        hub.ble.broadcast(data_send) # comando para enviarlo 
-        print(f"Enviado {data_send}")
-        wait(10)
 
 def giro_90_grados_derecha():
     hub.imu.reset_heading(0)
@@ -385,6 +376,26 @@ def T_izquierda():
                 hub.display.text("TI")
                 movermotores(70,70,0.12)
 
+#Funciones para subir o bajar el motor
+#S es para subir
+#B es para bajar
+def subir():
+    mensaje = "S" #asigno a mensaje rescate el mensaje a enviar
+    data_send = [mensaje] # lo almaceno en una lista
+    hub.ble.broadcast(data_send) # comando para enviarlo 
+    print(f"Enviado {data_send}")  #imprimo el mensaje que envie
+
+def bajar():
+    mensaje = "B" #asigno a mensaje rescate el mensaje a enviar
+    data_send = [mensaje] # lo almaceno en una lista
+    hub.ble.broadcast(data_send) # comando para enviarlo 
+    print(f"Enviado {data_send}")  #imprimo el mensaje que envie
+
+def rescate():
+    hub.display.text("rescate")
+    subir()
+
+
 #tiempo=StopWatch()
 modo = None
 
@@ -397,8 +408,8 @@ def main():
         update()  # Llamada a la función de actualización de sensores
         
         if color_l == Color.SILVER and color_r == Color.SILVER and color_f == Color.SILVERFRONTAL or color_f == Color.SILVER: # si detecto el valor del color plateado con los 3 sensores paro todo
-            parar_motores()
-            modo = "rescate" #asigno a la variable modo el texto "rescate"
+         #   parar_motores()
+          #  modo = "rescate" #asigno a la variable modo el texto "rescate"
 
         obstaculo() #Llamada a la funcion de obstaculo
 
@@ -411,7 +422,7 @@ def main():
         T_izquierda() #Llamada a la funcion T izquierda  
 
         if modo == "rescate": #si la variable modo es igual a rescate llamo a la funcion
-            rescate() # Llamada a la funcion rescate
+           # rescate() # Llamada a la funcion rescate
 
         seguidor_de_linea() # Lamada a la funcion seguidor de linea
         #tiempo_final = tiempo.time()
