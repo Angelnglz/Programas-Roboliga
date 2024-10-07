@@ -1,4 +1,3 @@
-
 from pybricks.hubs import PrimeHub
 from pybricks.pupdevices import Motor, ColorSensor, UltrasonicSensor, ForceSensor
 from pybricks.parameters import Button, Color, Direction, Port, Side, Stop
@@ -378,6 +377,48 @@ def T_izquierda():
                 hub.display.text("TI")
                 movermotores(70,70,0.12)
 
+#funciones para la parte de rescate
+def buscar_pared():
+    # Giro a la derecha 90 grados
+    while hub.imu.heading() < 85:
+        mover_motores_indefinido(100, -100)
+    parar_motores()
+    
+    if distance_sensor.distance() < 500:  # Si encontré una pared a menos de 50 cm
+        print(distance_sensor.distance())
+        
+        # Vuelvo a la posición de entrada para girar hacia la izquierda
+        while hub.imu.heading() > 1:
+            mover_motores_indefinido(-100, 100)
+        parar_motores()
+        
+        return "izquierda"  
+
+    else:  # Si no encontré pared
+        print(distance_sensor.distance())
+        
+        # Giro hacia la izquierda
+        while hub.imu.heading() > -85:
+            mover_motores_indefinido(-100, 100)
+        parar_motores()
+        
+        return "derecha"  # Retorno hacia la derecha
+
+def avanzar_hasta_tocar_pared():
+    while True:
+        mover_motores_indefinido(100,100) #muevo los motores hacia adelante
+        """velocidad_motor_derecho=motor_derecho.speed()
+        velocidad_motor_izquierdo=motor_izquierdo.speed()
+        print(velocidad_motor_izquierdo,velocidad_motor_derecho)"""
+        if motor_derecho.stalled() or motor_izquierdo.stalled(): #si alguno de los dos motores se detuvieron 
+            parar_motores() #paro los motores
+            break
+
+def encontre_zona_de_evacuacion(): #si los sensores de color encuentran negro la funcion se vuelve verdadera, de lo contrario se vuelve falsa
+    return color_sensor_l.color() == Color.BLACK or color_sensor_r.color() == Color.BLACK or color_sensor_f.color() == Color.BLACK
+
+    
+
 #Funciones para subir o bajar el motor
 #S es para subir
 #B es para bajar
@@ -393,8 +434,23 @@ def bajar():
     hub.ble.broadcast(data_send) # comando para enviarlo 
     print(f"Enviado {data_send}")  #imprimo el mensaje que envie
 
+#funcion principal para realizar la zona de rescate
 def rescate():
-    hub.display.text("rescate")
+    #hub.display.text("rescate")
+    hub.imu.reset_heading(0) #reinicio el giroscopio
+
+    #movermotores(100,100,0.5) #avanzo un poco para entrar a la zona de rescate
+
+    orientacion=buscar_pared() #busco hacia que lado tengo la pared mas cercana para definir el recorrido
+    print(orientacion)
+    
+    if orientacion == "izquierda":#debo realizar el recorrido girando hacia la izquierda
+        pass
+    else:#debo hacer el recorrido girando hacia la derecha
+        pass
+        
+
+
     
 
 
@@ -424,6 +480,7 @@ def main():
         T_izquierda() #Llamada a la funcion T izquierda  
 
         if modo == "rescate": #si la variable modo es igual a rescate llamo a la funcion
+            parar_motores()
             rescate() # Llamada a la funcion rescate
 
         seguidor_de_linea() # Lamada a la funcion seguidor de linea
