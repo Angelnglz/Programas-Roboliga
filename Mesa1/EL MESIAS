@@ -37,7 +37,7 @@ motor_izquierdo = Motor(Port.D,Direction.COUNTERCLOCKWISE) #motor izquierdo sent
 motor_derecho = Motor(Port.B,Direction.CLOCKWISE) #motor derecho sentido horario
 
 # Inicialización de los sensores
-#distance_sensor = UltrasonicSensor(Port.F)
+distance_sensor = UltrasonicSensor(Port.F)
 color_sensor_l = ColorSensor(Port.C)
 color_sensor_r = ColorSensor(Port.A)
 color_sensor_f = ColorSensor(Port.E)
@@ -76,7 +76,7 @@ def update():
     global color_l, color_r, light_l, light_f, light_r, distance
     
     # Obtener la distancia del sensor de ultrasonido
-    #distance = distance_sensor.distance()
+    distance = distance_sensor.distance()
     
     # Obtener el color detectado por los sensores de color
     color_l = color_sensor_l.color()
@@ -178,8 +178,8 @@ def obstaculo():
             #hub.display.text("obs")
             movermotores(-100,-100,0.1)
             hub.imu.reset_heading(0)
-            while hub.imu.heading()>-70:
-                mover_motores_indefinido(-100,100)
+            while hub.imu.heading()>-50: #revisar for sttar
+                mover_motores_indefinido(-75,55)
             parar_motores()
             movermotores(100,100,0.3)
             while color_sensor_l.reflection() > centro_negro:
@@ -295,7 +295,7 @@ def T_izquierda():
 def main():
     while True:
         update()  # Llamada a la función de actualización de sensores
-        #obstaculo()
+        obstaculo()
         deteccion_señal_verde()
         doble_negro()
         T_derecha()
