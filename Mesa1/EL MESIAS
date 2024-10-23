@@ -89,13 +89,13 @@ def update():
     light_f = color_sensor_f.reflection()
 
 #declaro las constantes a utilizar en mi logica de seguidor proporcional integrativo derivativo y luego las variables a utilizar
-velocidad=30
+velocidad=38
 #constante de proporcion
-kp=4.50
+kp=4
 #constante integral
 ki=0.001
 #constante derivativa
-kd=1.1
+kd=1.2
 
 error=10
 error_anterior = 0
@@ -178,7 +178,7 @@ def obstaculo():
             #hub.display.text("obs")
             movermotores(-100,-100,0.1)
             hub.imu.reset_heading(0)
-            while hub.imu.heading()>-50: #revisar for sttar
+            while hub.imu.heading()>-50: #revisar for star
                 mover_motores_indefinido(-75,55)
             parar_motores()
             movermotores(100,100,0.3)
@@ -237,7 +237,7 @@ def deteccion_señal_verde():
     if color_r == Color.GREEN:
         motor_izquierdo.stop()
         motor_derecho.stop()
-        movermotores(100,100,0.1)
+        movermotores(100,100,0.03)
         wait(10)
         if color_sensor_l.color() == Color.GREEN:
             hub.display.text("DV")
@@ -255,7 +255,7 @@ def deteccion_señal_verde():
     if color_l == Color.GREEN:
         motor_izquierdo.stop()
         motor_derecho.stop()
-        movermotores(100,100,0.05)
+        movermotores(100,100,0.03)
         wait(10)
         if color_sensor_r.color() == Color.GREEN:
             hub.display.text("DV")
@@ -268,7 +268,7 @@ def deteccion_señal_verde():
             movermotores(80,80,0.15)
             giro_90_grados_izquierda()
             wait(10)
-            movermotores(80,80,0.10)
+            movermotores(100,100,0.10)
             wait(10)
             buscar_linea_izquierda()
         
