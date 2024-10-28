@@ -13,7 +13,7 @@ radio = BLERadio(broadcast_channel=5, observe_channels=[4]) # Aqui podes sumar c
 counter = 0
 
 # Create PWM object for the servo
-servo = PWM(Pin(38), freq=50)
+servo = PWM(Pin(0), freq=50)
 
 myLED = Pin(0, Pin.OUT)
 myLED_rojo = Pin(48, Pin.OUT)
