@@ -652,8 +652,3 @@ def main():
         seguidor_de_linea() # Lamada a la funcion seguidor de linea
 # Ejecutar el bucle principal
 main()
-"""while True:
-    print(distance_sensor.distance())"""
-
-"""while True:
-    valores_HSV_color("izquierdo")"""
